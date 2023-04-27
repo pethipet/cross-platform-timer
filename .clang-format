@@ -1,9 +1,9 @@
 Language:        Cpp
 # BasedOnStyle:  LLVM
-AccessModifierOffset: -8                        # as indentation is 8, it should be -8
+AccessModifierOffset: 4                        # 
 AlignAfterOpenBracket: Align
 AlignArrayOfStructures: Right                   # it is more readable when aligned
-AlignConsecutiveAssignments:                    # 6.4.1.1.6 [rule - mandatory] Spaces before and after the ’becomes’ (=), try to align the ’=’ as much as possible.
+AlignConsecutiveAssignments:                    
   Enabled:         true
   AcrossEmptyLines: true
   AcrossComments:  true
@@ -29,9 +29,9 @@ AlignConsecutiveMacros:
   PadOperators:    false
 AlignEscapedNewlines: Right
 AlignOperands:   Align
-AlignTrailingComments: true                     # 6.5.3.1.1 [example] Alignment of comments
-AllowAllArgumentsOnNextLine: false              # 6.6.1.1.2 [rule - advisory] Function definition on a single line
-AllowAllParametersOfDeclarationOnNextLine: false  # # 6.6.1.1.2 [rule - advisory] Function definition on a single line
+AlignTrailingComments: true                     
+AllowAllArgumentsOnNextLine: false              # function on singe line
+AllowAllParametersOfDeclarationOnNextLine: false  # function decl on single line 
 AllowShortEnumsOnASingleLine: false
 AllowShortBlocksOnASingleLine: Never
 AllowShortCaseLabelsOnASingleLine: false
@@ -42,7 +42,7 @@ AllowShortLoopsOnASingleLine: false
 AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakAfterReturnType: None      # No oneliners
 AlwaysBreakBeforeMultilineStrings: false
-AlwaysBreakTemplateDeclarations: Yes            # According the example
+#AlwaysBreakTemplateDeclarations: Yes            # According the example
 AttributeMacros:
   - __capability
 BinPackArguments: false                         # in case of multiline all arguments but the first one should be on a new line
@@ -80,8 +80,8 @@ ColumnLimit:     160
 # CommentPragmas:  '^ IWYU pragma:'             # we don't have custom pragmas for clang-format
 QualifierAlignment: Leave                       # not defined in standard,
 CompactNamespaces: false
-ConstructorInitializerIndentWidth: 8            # all indentations are 8 based
-ContinuationIndentWidth: 8                      # all indentations are 8 based
+ConstructorInitializerIndentWidth: 4            # all indentations are 8 based
+ContinuationIndentWidth: 4                      # all indentations are 8 based
 Cpp11BracedListStyle: true
 DeriveLineEnding: false                         # UseCRLF is used instead
 DerivePointerAlignment: false                   # PointerAlignment is used instead
@@ -123,7 +123,7 @@ IndentGotoLabels: true
 IndentPPDirectives: AfterHash
 IndentExternBlock: AfterExternBlock
 IndentRequiresClause: true
-IndentWidth: 8
+IndentWidth: 4
 IndentWrappedFunctionNames: false
 InsertBraces:    false                         # it's mentioned that it's dangerous but it's of our standard
 InsertTrailingCommas: None
@@ -135,13 +135,7 @@ MacroBlockBegin: ''
 MacroBlockEnd:   ''
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: None
-# ObjC are note related to us
-ObjCBinPackProtocolList: Auto
-ObjCBlockIndentWidth: 2
-ObjCBreakBeforeNestedBlockParam: true
-ObjCSpaceAfterProperty: false
-ObjCSpaceBeforeProtocolList: true
-# ObjC end
+
 PenaltyBreakAssignment: 2
 PenaltyBreakBeforeFirstCallParameter: 19
 PenaltyBreakComment: 300

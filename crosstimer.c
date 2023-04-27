@@ -1,3 +1,18 @@
+/**
+ *  Copyright 2023 Peter Himmler
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 
 #include "crosstimer.h"
 
@@ -34,12 +49,12 @@ extern "C"
         ECT_STARTED = 2   /**<  STARTED --> STOPPED */
     } ECrossTimerState;
 
-#define CT_INIT_COMMON(p)                                                                                              \
-    {                                                                                                                  \
-        (p)->state = ECT_DISABLED;                                                                                     \
-        (p)->startDelay = (p)->periodicInterval = 0;                                                                   \
-        (p)->cb = NULL;                                                                                                \
-        (p)->arg = NULL;
+#define CT_INIT_COMMON(p)                                                                                                                                      \
+    {                                                                                                                                                          \
+	(p)->state	= ECT_DISABLED;                                                                                                                        \
+	(p)->startDelay = (p)->periodicInterval = 0;                                                                                                           \
+	(p)->cb					= NULL;                                                                                                        \
+	(p)->arg				= NULL;
 
     struct TCrossTimer
     {
@@ -68,10 +83,10 @@ extern "C"
 
 #elif defined(CROSSTIMER_POSIX)
 
-#define CT_INIT(p)                                                                                                     \
-    CT_INIT_COMMON(p)                                                                                                  \
-    (p)->timerId = 0;                                                                                                  \
-    }
+#    define CT_INIT(p)                                                                                                                                         \
+	CT_INIT_COMMON(p)                                                                                                                                      \
+	(p)->timerId = 0;                                                                                                                                      \
+	}
 
 #else
 #error "PLATFORM NOT SUPPORTED"
@@ -126,12 +141,12 @@ extern "C"
 
     VOID CALLBACK WaitOrTimerCallback(PVOID lpParameter, BOOLEAN notRelevant)
     {
-        TCrossTimer *p = (TCrossTimer *)lpParameter;
-        if (p && p->cb)
-        {
-            p->cb(p->arg);
-        }
-        return;
+	TCrossTimer * p = (TCrossTimer *)lpParameter;
+	if (p && p->cb)
+	{
+	    p->cb(p->arg);
+	}
+	return;
     }
 
 #elif defined(CROSSTIMER_POSIX)
@@ -139,10 +154,10 @@ extern "C"
 static void threadedHandler(union sigval sv)
 {
     /* TODO: Check if pointer is in range ... */
-    TCrossTimer *p = (TCrossTimer *)sv.sival_ptr;
+    TCrossTimer * p = (TCrossTimer *)sv.sival_ptr;
     if (p && p->cb)
     {
-        p->cb(p->arg);
+	p->cb(p->arg);
     }
     return;
 }
@@ -151,37 +166,37 @@ static void threadedHandler(union sigval sv)
 #error "PLATFORM NOT SUPPORTED"
 #endif
 
-    TCrossTimer *timerCreate(TTimeSec startDelay, TTimeSec periodic, TTimerCallback cb, void *cbArg)
+    TCrossTimer * timerCreate(TTimeSec startDelay, TTimeSec periodic, TTimerCallback cb, void * cbArg)
     {
 
-        TCrossTimer *pRet = NULL;
+	TCrossTimer * pRet = NULL;
 
-        for (int i = 0; i < MAX_CROSSTIMER; i++)
-        {
-            if (gTimerSlots[i].state == ECT_DISABLED)
-            {
-                pRet = &gTimerSlots[i];
-                break;
-            }
-        } /* for */
-        if (pRet)
-        {
-            pRet->state = ECT_ENABLED;
-            pRet->startDelay = startDelay;
-            pRet->periodicInterval = periodic;
-            pRet->arg = cbArg;
-            pRet->cb = cb;
+	for (int i = 0; i < MAX_CROSSTIMER; i++)
+	{
+	    if (gTimerSlots[i].state == ECT_DISABLED)
+	    {
+		pRet = &gTimerSlots[i];
+		break;
+	    }
+	} /* for */
+	if (pRet)
+	{
+	    pRet->state		   = ECT_ENABLED;
+	    pRet->startDelay	   = startDelay;
+	    pRet->periodicInterval = periodic;
+	    pRet->arg		   = cbArg;
+	    pRet->cb		   = cb;
 
 #if defined(CROSSTIMER_WINDOWS)
 
 #elif defined(CROSSTIMER_POSIX)
         struct sigevent sev;
 
-        sev.sigev_notify = SIGEV_THREAD;
-        sev.sigev_signo = 0;
-        sev.sigev_value.sival_ptr = pRet; /* pass our timer structure */
-        sev.sigev_notify_function = threadedHandler;
-        sev.sigev_notify_attributes = NULL;
+	sev.sigev_notify	    = SIGEV_THREAD;
+	sev.sigev_signo		    = 0;
+	sev.sigev_value.sival_ptr   = pRet; /* pass our timer structure */
+	sev.sigev_notify_function   = threadedHandler;
+	sev.sigev_notify_attributes = NULL;
 
         if (timer_create(CLOCK_MONOTONIC, &sev, &(pRet->timerId)))
         {
@@ -192,18 +207,18 @@ static void threadedHandler(union sigval sv)
         }
         fprintf(stderr, "timer_create: timeId %p\n", pRet->timerId);
 #endif
-            return pRet;
-        }
-        return NULL;
+	    return pRet;
+	}
+	return NULL;
     }
 
     /**
      * @brief Destroy/Disable a timer
      * @param[in] timer to be freed.
      */
-    int timerDestroy(TCrossTimer *pT)
+    int timerDestroy(TCrossTimer * pT)
     {
-        TCrossTimer *p = gTimerSlots;
+	TCrossTimer * p = gTimerSlots;
 
         for (; p < gTimerSlots + MAX_CROSSTIMER - 1; p++)
         {
@@ -247,7 +262,7 @@ static void threadedHandler(union sigval sv)
         struct itimerspec its = {.it_interval = {.tv_sec = pT->periodicInterval, .tv_nsec = 0l},
                                  .it_value = {.tv_sec = pT->startDelay, .tv_nsec = 0l}};
 
-        pT->state = ECT_STARTED;
+	pT->state = ECT_STARTED;
 
         /* relative time*/
         if (timer_settime(pT->timerId, 0, &its, NULL))
@@ -281,7 +296,10 @@ static void threadedHandler(union sigval sv)
 #elif defined(CROSSTIMER_POSIX)
     if (pT && (pT->state == ECT_STARTED) && pT->timerId)
     {
-        static struct itimerspec stop = {{0, 0}, {0, 0}};
+	static struct itimerspec stop = {
+	    {0, 0},
+	    {0, 0}
+	  };
 
         /* relative time*/
         if (timer_settime(pT->timerId, 0, &stop, NULL))
