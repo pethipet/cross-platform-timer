@@ -41,6 +41,7 @@ jobs:
               cxx: "clang++"
               #cmake_gen: "Unix Makefiles"
       name: ${{ matrix.config.name }}
+
       runs-on: ${{ matrix.config.os }}
       
       steps:
@@ -75,3 +76,5 @@ jobs:
         # Run program
         run: ${{github.workspace}}\build\${{env.BUILD_TYPE}}\cross_timer.exe
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
