@@ -73,8 +73,5 @@ jobs:
       - name: Run the generated binary (Win) 
         if: ${{ matrix.config.os == 'windows-latest' }}
         # Run program
-        run: ${{github.workspace}}\build\$((env.BUILD_TYPE}}\cross_timer.exe
+        run: ${{github.workspace}}\build\${{env.BUILD_TYPE}}\cross_timer.exe
 
-      #  if: ${{ matrix.config.os == 'windows-latest' }}
-      #  # Run program
-      #  run: ${{github.workspace}}\build\$((env.BUILD_TYPE}} cross_timer.exe
