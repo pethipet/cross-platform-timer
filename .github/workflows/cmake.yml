@@ -21,45 +21,57 @@ jobs:
               os: windows-latest
               cc: "cl"
               cxx: "cl"
-              cmake_gen: "NMake Makefiles"
-            - name: "Windows Latest MinGW"
-              artifact: "Windows-MinGW.tar.xz" # No artifacts at the moment
-              os: windows-latest
-              cc: "gcc"
-              cxx: "g++"
-              cmake_gen: "MinGW Makefiles"
+              #cmake_gen: "NMake Makefiles"
+            #- name: "Windows Latest MinGW"
+             # artifact: "Windows-MinGW.tar.xz" # No artifacts at the moment
+             # os: windows-latest
+             # cc: "gcc"
+             # cxx: "g++"
+              #cmake_gen: "MinGW Makefiles"
             - name: "Ubuntu Latest GCC"
               artifact: "Linux-GCC.tar.xz" # No artifacts at the moment
               os: ubuntu-latest
               cc: "gcc"
               cxx: "g++"
-              cmake_gen: "Unix Makefiles"
+              #cmake_gen: "Unix Makefiles"
             - name: "Ubuntu Latest Clang"
               artifact: "Linux-Clang.tar.xz" # No artifacts at the moment
               os: ubuntu-latest
               cc: "clang"
               cxx: "clang++"
-              cmake_gen: "Unix Makefiles"
+              #cmake_gen: "Unix Makefiles"
       name: ${{ matrix.config.name }}
       runs-on: ${{ matrix.config.os }}
+      
       steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Configure CMake
+        
+      - name: Configure CMake (${{ matrix.config.name }})
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        run: |
+            export CC=${{ matrix.config.cc }}
+            export CXX=${{ matrix.config.cxx }}
+            cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
-      - name: Build
+      - name: Build (${{ matrix.config.name }})
       # Build your program with the given configuration
-        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+        run: |
+            export CC=${{ matrix.config.cc }}
+            export CXX=${{ matrix.config.cxx }}
+            cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
-      - name: Run the generated binary (Linux)
+
+      - name: Run the generated binary ${{ matrix.config.name }}
         if: ${{ matrix.config.os == 'ubuntu-latest' }}
         # Run program
         run: ${{github.workspace}}/build/cross_timer
-
-      - name: Run the generated binary (Win)
         if: ${{ matrix.config.os == 'windows-latest' }}
         # Run program
-        run: ${{github.workspace}}\build\cross_timer.exe
+        run: ${{github.workspace}}\build\$((env.BUILD_TYPE}}\cross_timer.exe
+
+      #- name: Run the generated binary (Win)
+      #  if: ${{ matrix.config.os == 'windows-latest' }}
+      #  # Run program
+      #  run: ${{github.workspace}}\build\$((env.BUILD_TYPE}} cross_timer.exe
