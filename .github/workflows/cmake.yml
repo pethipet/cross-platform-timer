@@ -51,21 +51,17 @@ jobs:
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
         env:
-            CC: ${{ matrix.config.cc }}
-            CXX: ${{ matrix.config.cxx }}
+          CC: ${{ matrix.config.cc }}
+          CXX: ${{ matrix.config.cxx }}
         run: |
-            export CC=${{ matrix.config.cc }}
-            export CXX=${{ matrix.config.cxx }}
             cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
       - name: Build (${{ matrix.config.name }})
       # Build your program with the given configuration
         env:
-            CC: ${{ matrix.config.cc }}
-            CXX: ${{ matrix.config.cxx }}
+          CC: ${{ matrix.config.cc }}
+          CXX: ${{ matrix.config.cxx }}
         run: |
-            export CC=${{ matrix.config.cc }}
-            export CXX=${{ matrix.config.cxx }}
             cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
 
