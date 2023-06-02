@@ -1,14 +1,10 @@
-name: CMake
+name: Continuous Integration
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
+    push:
+        branches: [ master ]
+    pull_request:
+        branches: [ master ]
 
 jobs:
     build:
@@ -43,23 +39,34 @@ jobs:
       name: ${{ matrix.config.name }}
       runs-on: ${{ matrix.config.os }}
       steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Configure CMake
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-
-      - name: Build
-      # Build your program with the given configuration
-        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-
-      - name: Run the generated binary (Linux)
+      - name: Mango Checkout
+        uses: actions/checkout@v2
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7.7 # Using this version because it is my current one as well
+      - name: Setup, Create Solution And Build For Linux
         if: ${{ matrix.config.os == 'ubuntu-latest' }}
-        # Run program
-        run: ${{github.workspace}}/build/cross_timer
-
-      - name: Run the generated binary (Win)
+        run: |
+            sudo apt update
+            sudo apt install -y xorg-dev freeglut3-dev
+            export CC=${{ matrix.config.cc }}
+            export CXX=${{ matrix.config.cxx }}
+            python fetch_dependencies.py
+            mkdir build
+            cd build
+            cmake -G "${{ matrix.config.cmake_gen }}" ..
+            cd ..
+            cmake --build ./build --config Release
+      - name: Setup MSVC-Developer-Console For Windows With MSVC
+        if: ${{ matrix.config.cc == 'cl' }}
+        uses: ilammy/msvc-dev-cmd@v1 # To get nmake to find cl
+      - name: Create Solution And Build For Windows
         if: ${{ matrix.config.os == 'windows-latest' }}
-        # Run program
-        run: ${{github.workspace}}\build\cross_timer.exe
+        run: |
+            python fetch_dependencies.py
+            mkdir build
+            cd build
+            cmake -G "${{ matrix.config.cmake_gen }}" ..
+            cd ..
+            cmake --build ./build --config Release
