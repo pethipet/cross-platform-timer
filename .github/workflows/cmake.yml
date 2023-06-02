@@ -67,11 +67,12 @@ jobs:
         if: ${{ matrix.config.os == 'ubuntu-latest' }}
         # Run program
         run: ${{github.workspace}}/build/cross_timer
+       
+      - name: Run the generated binary (Win) 
         if: ${{ matrix.config.os == 'windows-latest' }}
         # Run program
         run: ${{github.workspace}}\build\$((env.BUILD_TYPE}}\cross_timer.exe
 
-      #- name: Run the generated binary (Win)
       #  if: ${{ matrix.config.os == 'windows-latest' }}
       #  # Run program
       #  run: ${{github.workspace}}\build\$((env.BUILD_TYPE}} cross_timer.exe
