@@ -11,7 +11,7 @@ function(v_message content)
 endfunction()
 
 #
-#
+# set project warnings
 #
 function(set_project_warnings project_name)
   set(MSVC_WARNINGS
