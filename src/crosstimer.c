@@ -16,20 +16,23 @@
 
 #include "crosstimer.h"
 
+
+#if defined(CROSSTIMER_WINDOWS)
+#    define WIN32_LEAN_AND_MEAN
+#    include <windows.h>
+#elif defined(CROSSTIMER_POSIX)
+#    include <errno.h>
+#    include <signal.h>
+#    include <unistd.h>
+#else
+#    error "PLATFORM NOT SUPPORTED"
+#endif
+
+
 #include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-#if defined(CROSSTIMER_WINDOWS)
-#include <windows.h>
-#elif defined(CROSSTIMER_POSIX)
-#include <errno.h>
-#include <signal.h>
-#include <unistd.h>
-#else
-#error "PLATFORM NOT SUPPORTED"
-#endif
 
 #ifndef MAX_CROSSTIMER
 /** Maximum number of timer usable. Default to 5, not dynamic */

@@ -16,17 +16,24 @@
 
 #include "crosstimer.h"
 
-#include <stdio.h>
+#if defined(WIN32)
 
-#if defined(_WIN32)
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+
+#    include <WinSock2.h>
 #    include <windows.h>
 #else
 #    include <unistd.h>
 #endif
 
+#include <stdio.h>
+#include <stdlib.h>
+
 void threadSleep(unsigned long s)
 {
-#if defined(_WIN32)
+#if defined(WIN32)
     Sleep(s);
 #else
     sleep(s / 1000);
@@ -49,13 +56,12 @@ void cb2(void * arg)
     (*pc)++;
 }
 
-
-#include <stdlib.h>
-
 int main(int argc, char ** argv)
 {
     TCrossTimer * t1,*t2 = NULL;
 
+    argc;
+    argv;
     startupTimerSystem(1);
 
     printf("Hallo Anfang\n");
@@ -78,6 +84,7 @@ int main(int argc, char ** argv)
     threadSleep(4000);
     shutdownTimerSystem();
     printf("after shutdown\n");
+
 
     return 0;
 }
