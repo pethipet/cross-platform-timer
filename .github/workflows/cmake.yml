@@ -40,13 +40,17 @@ jobs:
               cc: "clang"
               cxx: "clang++"
               cmake_gen: "Ninja"
-      name: ${{ matrix.config.name }}
+      name: ${p: matrix.config.name }}
 
       runs-on: ${{ matrix.config.os }}
       
-      steps:
-      - name: Checkout
+      step:
+      - name: Checkout  - name: Get specific version CMake, v3.26.0
         uses: actions/checkout@v3
+        
+      - name: Get specific version CMake, v3.26.0
+      - uses: lukka/get-cmake@v3.26.0     # <- this one-liner is all you need.
+         
         
       - name: Configure CMake (${{ matrix.config.name }})
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
