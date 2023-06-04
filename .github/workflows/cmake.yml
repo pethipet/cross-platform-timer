@@ -21,7 +21,7 @@ jobs:
               os: windows-latest
               cc: "cl"
               cxx: "cl"
-              cmake_gen: "NMake Makefiles"
+              cmake_gen: "Ninja"
             #- name: "Windows Latest MinGW"
              # artifact: "Windows-MinGW.tar.xz" # No artifacts at the moment
              # os: windows-latest
