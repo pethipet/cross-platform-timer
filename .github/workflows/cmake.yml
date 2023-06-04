@@ -40,7 +40,7 @@ jobs:
               cc: "clang"
               cxx: "clang++"
               cmake_gen: "Ninja"
-      name: ${p: matrix.config.name }}
+      name: ${{ matrix.config.name }}
 
       runs-on: ${{ matrix.config.os }}
       
