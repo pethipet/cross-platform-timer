@@ -8,7 +8,7 @@
             "type": "lldb",
             "request": "launch",
             "name": "Debug",
-            "program": "${workspaceFolder}/build/cross_timer.exe",
+            "program": "${workspaceFolder}/build/debug/cross_timer.exe",
             "args": [],
             "cwd": "${workspaceFolder}"
         }
