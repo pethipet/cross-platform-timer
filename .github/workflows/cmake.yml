@@ -55,7 +55,7 @@ jobs:
           CC: ${{ matrix.config.cc }}
           CXX: ${{ matrix.config.cxx }}
         run: |
-            cmake -G ${{matrix.config.cmake_gen}} ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+            cmake -G "${{matrix.config.cmake_gen}}" ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
       - name: Build (${{ matrix.config.name }})
       # Build your program with the given configuration
