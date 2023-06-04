@@ -18,8 +18,15 @@
 #define CROSSTIMER_H
 
 #if defined(_WIN32) || defined(WIN32)
+
 /* Windows Style */
 #define CROSSTIMER_WINDOWS 1
+
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+
+
 #elif !defined(_WIN32) && (defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__)))
 /* UNIX-style OS. */
 /* request definitions for timer API */
