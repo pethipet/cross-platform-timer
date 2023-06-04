@@ -69,12 +69,12 @@ jobs:
       - name: Run the generated binary ${{ matrix.config.name }}
         if: ${{ matrix.config.os == 'ubuntu-latest' }}
         # Run program
-        run: ${{github.workspace}}/build/${{env.BUILD_TYPE}}/cross_timer
+        run: ${{github.workspace}}/build/bin/${{env.BUILD_TYPE}}/cross_timer
        
       - name: Run the generated binary (Win) 
         if: ${{ matrix.config.os == 'windows-latest' }}
         # Run program
-        run: ${{github.workspace}}\build\${{env.BUILD_TYPE}}\cross_timer.exe
+        run: ${{github.workspace}}\build\bin\${{env.BUILD_TYPE}}\cross_timer.exe
 
       #- name: Setup tmate session
       #  uses: mxschmitt/action-tmate@v3
