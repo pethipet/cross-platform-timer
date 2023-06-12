@@ -16,7 +16,7 @@
 
 #include "crosstimer.h"
 
-#if defined(WIN32)
+#if defined(CROSSTIMER_WINDOWS)
 
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
@@ -33,7 +33,7 @@
 
 void threadSleep(unsigned long s)
 {
-#if defined(WIN32)
+#if defined(CROSSTIMER_WINDOWS)
     Sleep(s);
 #else
     sleep(s / 1000);
