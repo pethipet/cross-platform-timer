@@ -1,17 +1,38 @@
-# cross-platform-timer
+# A Cross-platform-timer
 Small example to create low resolution timer handling in C for Windows and POSIX/Linux System
 
 Feature:
 * Abstract timer API - hiding implementation
 * Platform support POSIX / Linux and Windows 
-* Testbet to learn how github action/runners work --> on commit linux build and run a mini test program
-* 
+
+* Testbet to learn current build systems
+** CMake
+** Meson
+** github action/runner  
 
 
-# How to build?
+## Getting started
+
+This project is hosted on GitHub. 
+You can clone the project directly using this command:
+
+> git clone --recursive https://github.com/pethipet/cross-platform-timer.git
+
+
+## How to build?
+This projects build with CMake and Meson.
+
 ## CMake
 
 ## Meson
+
+> \$ cd cross-platform-timer
+>
+> \$ meson setup builddir && cd builddir
+>
+> \$ meson compile
+>
+> \$ meson test
 
 
 
