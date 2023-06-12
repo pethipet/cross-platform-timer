@@ -85,15 +85,16 @@ endif()
 # Specify  all headers and implementation files
 #
 set(headers
-    src/crosstimer.h
+    include/crosstimer.h
 )
 
 set(sources
     src/crosstimer.c
 )
 
+
 set( exesources 
-    main.c 
+    example/main.c 
     ${sources}
 )
 
@@ -122,7 +123,7 @@ add_executable(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME}
   PUBLIC
-  ${CMAKE_CURRENT_SOURCE_DIR}/src
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
   PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
@@ -145,7 +146,7 @@ add_library( ${PROJECT_NAME}_LIB
 
 target_include_directories(${PROJECT_NAME}_LIB
   PUBLIC
-  ${CMAKE_CURRENT_SOURCE_DIR}/src
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
   PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
