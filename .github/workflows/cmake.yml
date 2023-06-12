@@ -21,25 +21,25 @@ jobs:
               os: windows-latest
               cc: "cl"
               cxx: "cl"
-              #cmake_gen: "NMake Makefiles"
+              cmake_gen: "Ninja"
             #- name: "Windows Latest MinGW"
              # artifact: "Windows-MinGW.tar.xz" # No artifacts at the moment
              # os: windows-latest
              # cc: "gcc"
              # cxx: "g++"
               #cmake_gen: "MinGW Makefiles"
-            - name: "Ubuntu Latest GCC"
-              artifact: "Linux-GCC.tar.xz" # No artifacts at the moment
-              os: ubuntu-latest
-              cc: "gcc"
-              cxx: "g++"
-              #cmake_gen: "Unix Makefiles"
+       #     - name: "Ubuntu Latest GCC"
+       #       artifact: "Linux-GCC.tar.xz" # No artifacts at the moment
+       #       os: ubuntu-latest
+       #       cc: "gcc"
+       #       cxx: "g++"
+       #       cmake_gen: "Unix Makefiles"
             - name: "Ubuntu Latest Clang"
               artifact: "Linux-Clang.tar.xz" # No artifacts at the moment
               os: ubuntu-latest
               cc: "clang"
               cxx: "clang++"
-              #cmake_gen: "Unix Makefiles"
+              cmake_gen: "Ninja"
       name: ${{ matrix.config.name }}
 
       runs-on: ${{ matrix.config.os }}
@@ -48,6 +48,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         
+      - name: Set up Visual Studio shell
+        uses: egor-tensin/vs-shell@v2  # MIT license OK
+        with:
+          arch: x64
+    
+      - name: Get specific version CMake, v3.26.0
+        uses: lukka/get-cmake@v3.26.0     # <- this one-liner is all you need.
+         
+        
       - name: Configure CMake (${{ matrix.config.name }})
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
@@ -55,7 +64,7 @@ jobs:
           CC: ${{ matrix.config.cc }}
           CXX: ${{ matrix.config.cxx }}
         run: |
-            cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+            cmake -G "${{matrix.config.cmake_gen}}" -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
       - name: Build (${{ matrix.config.name }})
       # Build your program with the given configuration
@@ -69,12 +78,12 @@ jobs:
       - name: Run the generated binary ${{ matrix.config.name }}
         if: ${{ matrix.config.os == 'ubuntu-latest' }}
         # Run program
-        run: ${{github.workspace}}/build/cross_timer
+        run: ${{github.workspace}}/build/bin/${{env.BUILD_TYPE}}/cross_timer
        
       - name: Run the generated binary (Win) 
         if: ${{ matrix.config.os == 'windows-latest' }}
         # Run program
-        run: ${{github.workspace}}\build\${{env.BUILD_TYPE}}\cross_timer.exe
+        run: ${{github.workspace}}\build\bin\${{env.BUILD_TYPE}}\cross_timer.exe
 
       #- name: Setup tmate session
       #  uses: mxschmitt/action-tmate@v3
