@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 
 int main(int argc, char **argv)
@@ -12,6 +13,6 @@ int main(int argc, char **argv)
     _putenv("VAR_TSK=");
     printf(" 'Before' %s,  'After' %s\n", VAR_TSK_BEFORE, getenv("VAR_TSK"));
 
-    return EXIT_SUCESS;
+    return EXIT_SUCCESS;
      /* EXIT_FAILURE;*/
 }
