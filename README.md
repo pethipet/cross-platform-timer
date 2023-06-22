@@ -28,12 +28,26 @@ You can clone the project directly using this command:
 This projects build with CMake and Meson.
 
 ## CMake
+> \$ cd cross-platform-time
+>
+> \$ cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
+> 
+> ...
+>
+> \$ cmake --build build --config RelWithDebInfo
+>
+> \$ cd build/bin/RelWithDebInfo
+> 
+> HERE you find some example binaries build
+
 
 ## Meson
 
 > \$ cd cross-platform-timer
 >
-> \$ meson setup builddir && cd builddir
+> \$ meson setup builddir
+>
+> \$ cd builddir
 >
 > \$ meson compile
 >

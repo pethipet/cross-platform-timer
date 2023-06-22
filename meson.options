@@ -1,0 +1,6 @@
+option('BUILD_CROSSLIBS_EXAMPLES_STATIC', type : 'boolean', value : false, description : 'With this option on, we try hard to fully link the examples statically!" option')
+option('BUILD_CROSSLIBS_FORCE_MSVC', type : 'boolean', value : false, description: 'Force usage of MSVC compiler. Note: If vcvars are not setup before, meson setup will fail!')
+option('BUILD_CROSSLIBS_TYPE', type : 'combo', choices: [ 'plain', 'debug', 'debugoptimized', 'release', 'minsize', 'custom' ], value : 'debugoptimized', description: 'Libraries buildtype.')
+
+
+
