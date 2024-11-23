@@ -2,7 +2,7 @@ project('crosslibs', 'c',
 	license : 'Apache-2.0' ,
 	license_files : ['LICENSE'] ,
 	default_options : [
-		'warning_level=3'
+		'warning_level=3',
 		'c_std=c11',
 		
 #		'buildtype=release',
